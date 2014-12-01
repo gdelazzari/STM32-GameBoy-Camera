@@ -49,7 +49,7 @@ int main()
 			//xprintf("Acquired image\n");
 
 			UART_putc(0x00);
-			HAL_UART_Transmit(&handle_UART, CAM_readImage(), IMGSIZE, 22000);
+			HAL_UART_Transmit(&handle_UART, CAM_readImage(), IMAGE_SIZE, 22000);
 		}
 	}
 }

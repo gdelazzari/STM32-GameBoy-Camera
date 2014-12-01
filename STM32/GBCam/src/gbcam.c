@@ -26,7 +26,7 @@ TIM_HandleTypeDef		htim;
 /*
  * Global variables
  */
-volatile uint8_t		image[IMGSIZE];
+volatile uint8_t		image[IMAGE_SIZE];
 volatile uint16_t		imageCursor;
 
 volatile int			flag_captureGoing,
@@ -446,7 +446,7 @@ void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* AdcHandle)
 	}
 
 	/* Check for captureGoing flag, array overflow and skip variable*/
-	if (flag_captureGoing && imageCursor < IMGSIZE && !(skip--)) {
+	if (flag_captureGoing && imageCursor < IMAGE_SIZE && !(skip--)) {
 		image[imageCursor++] = (uint8_t) AdcHandle->Instance->DR;
 		skip = PIXSKIP;
 	}

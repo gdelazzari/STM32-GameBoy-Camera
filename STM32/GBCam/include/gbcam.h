@@ -12,8 +12,15 @@
 /*
  * Configuration
  */
-#define PIXSKIP		0
-#define	 IMGSIZE		16128
+#define IMAGE_WIDTH	16
+#define IMAGE_HEIGHT	16
+
+/*
+ * Defines
+ */
+#define	 IMAGE_SIZE	IMAGE_WIDTH * IMAGE_HEIGHT
+#define PIXSKIP		16128 / IMAGE_SIZE
+
 
 /*
  * Typedefs
