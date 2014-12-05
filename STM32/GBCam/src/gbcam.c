@@ -415,6 +415,11 @@ void CAM_pauseCapture(void)
 void CAM_resumeCapture(void)
 {
 	acquiring = 1;
+
+	flag_captureGoing = 0;
+	flag_captureEnd = 0;
+
+	imageCursor = 0;
 }
 
 int CAM_imageAvailable(void)
