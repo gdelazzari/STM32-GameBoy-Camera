@@ -40,19 +40,19 @@ volatile int			skip;
 /*
  * Pin macros
  */
-#define RESET_low()	HAL_GPIO_WritePin(GPIOA, GPIO_PIN_4, GPIO_PIN_RESET)
-#define RESET_high()	HAL_GPIO_WritePin(GPIOA, GPIO_PIN_4, GPIO_PIN_SET)
+#define RESET_low()	GPIOA->BSRRH = GPIO_PIN_4 //HAL_GPIO_WritePin(GPIOA, GPIO_PIN_4, GPIO_PIN_RESET)
+#define RESET_high()	GPIOA->BSRRL = GPIO_PIN_4 //HAL_GPIO_WritePin(GPIOA, GPIO_PIN_4, GPIO_PIN_SET)
 
-#define START_low()	HAL_GPIO_WritePin(GPIOB, GPIO_PIN_0, GPIO_PIN_RESET)
-#define START_high()	HAL_GPIO_WritePin(GPIOB, GPIO_PIN_0, GPIO_PIN_SET)
+#define START_low()	GPIOB->BSRRH = GPIO_PIN_0 //HAL_GPIO_WritePin(GPIOB, GPIO_PIN_0, GPIO_PIN_RESET)
+#define START_high()	GPIOB->BSRRL = GPIO_PIN_0 //HAL_GPIO_WritePin(GPIOB, GPIO_PIN_0, GPIO_PIN_SET)
 
-#define LOAD_low()		HAL_GPIO_WritePin(GPIOC, GPIO_PIN_0, GPIO_PIN_RESET)
-#define LOAD_high()	HAL_GPIO_WritePin(GPIOC, GPIO_PIN_0, GPIO_PIN_SET)
+#define LOAD_low()		GPIOC->BSRRH = GPIO_PIN_0 //HAL_GPIO_WritePin(GPIOC, GPIO_PIN_0, GPIO_PIN_RESET)
+#define LOAD_high()	GPIOC->BSRRL = GPIO_PIN_0 //HAL_GPIO_WritePin(GPIOC, GPIO_PIN_0, GPIO_PIN_SET)
 
-#define SIN_put(what)	HAL_GPIO_WritePin(GPIOC, GPIO_PIN_2, what)
-#define SIN_low()		HAL_GPIO_WritePin(GPIOC, GPIO_PIN_2, GPIO_PIN_RESET)
+#define SIN_put(what)	if (what) GPIOC->BSRRL = GPIO_PIN_2; else GPIOC->BSRRH = GPIO_PIN_2 //HAL_GPIO_WritePin(GPIOC, GPIO_PIN_2, what)
+#define SIN_low()		GPIOC->BSRRH = GPIO_PIN_2 //HAL_GPIO_WritePin(GPIOC, GPIO_PIN_2, GPIO_PIN_RESET)
 
-#define READ()			HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_1)
+#define READ()			(GPIOC->IDR & GPIO_PIN_1) ? 1 : 0 //HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_1)
 
 
 /*
@@ -100,7 +100,6 @@ void CAM_GPIO_init(void)
 	 * [INPUT]
 	 */
 	GPIO_InitStruct.Pin = GPIO_PIN_1;
-	//GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
 	GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING_FALLING;
 	GPIO_InitStruct.Pull = GPIO_PULLDOWN;
 	HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
@@ -193,7 +192,7 @@ void CAM_TIM_init(CLOCKSPEED speed)
 		period = 8;
 	} else {
 		prescaler = 84;
-		period = 18;
+		period = 12;
 	}
 
 	/*
