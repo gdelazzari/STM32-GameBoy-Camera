@@ -30,9 +30,9 @@ volatile uint8_t		image[IMAGE_SIZE];
 volatile uint16_t		imageCursor;
 
 volatile int			flag_captureGoing,
-						flag_captureEnd,
-						flag_clockRising,
-						flag_clockFalling;
+						flag_captureEnd;
+
+volatile int			clockPhase;
 
 volatile int			acquiring;
 volatile int			skip;
@@ -235,15 +235,11 @@ void CAM_TIM_init(CLOCKSPEED speed)
 }
 
 inline void CAM_waitClockRising(void) {
-	flag_clockRising = 0;
-	while (!flag_clockRising)
-		;
+	while (!clockPhase);
 }
 
 inline void CAM_waitClockFalling(void) {
-	flag_clockFalling = 0;
-	while (!flag_clockFalling)
-		;
+	while (clockPhase);
 }
 
 inline void CAM_dummyClock() {
@@ -312,8 +308,8 @@ void CAM_init()
 
 	flag_captureGoing = 0;
 	flag_captureEnd = 0;
-	flag_clockRising = 0;
-	flag_clockFalling = 0;
+
+	clockPhase = 0;
 
 	acquiring = 0;
 
@@ -455,13 +451,13 @@ void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* AdcHandle)
 void HAL_TIM_PWM_PulseFinishedCallback(TIM_HandleTypeDef *htim)
 {
 	if (htim->Instance == TIM2)
-		flag_clockRising = 1;
+		clockPhase = 1;
 }
 
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
 	if (htim->Instance == TIM2)
-		flag_clockFalling = 1;
+		clockPhase = 0;
 }
 
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
