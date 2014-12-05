@@ -12,14 +12,17 @@
 /*
  * Configuration
  */
-#define IMAGE_WIDTH	16
-#define IMAGE_HEIGHT	16
+#define IMAGE_WIDTH	128
+#define IMAGE_HEIGHT	126
 
 /*
  * Defines
  */
-#define	 IMAGE_SIZE	IMAGE_WIDTH * IMAGE_HEIGHT
-#define PIXSKIP		16128 / IMAGE_SIZE
+//#define	 IMAGE_SIZE	IMAGE_WIDTH * IMAGE_HEIGHT
+//#define PIXSKIP		(16128 / IMAGE_SIZE) - 1
+
+#define IMAGE_SIZE		16128
+#define PIXSKIP				0
 
 
 /*
